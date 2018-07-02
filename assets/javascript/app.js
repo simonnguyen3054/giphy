@@ -9,36 +9,57 @@
 //on search button clicked, add the button
 //Alert user button has added
 
-var buttonArray = ['Cat', 'Dog', 'Cow'];
+var buttonArray = [];
 
 //create buttons
 function createButtons() {
-  for (i in buttonArray) {
-    var button = $('<button>').text(buttonArray[i]);
-    button.addClass('giphyButton');
-    button.attr('data-animation');
-    $('#giphyButtons').append(button);
+  event.preventDefault();
+  var inputValue = $('form input').val();
+
+  if (inputValue) {
+    buttonArray.push(inputValue);
+  } else {
+    alert('Please enter a value');
   }
+
+  var button = $('<button>').text(inputValue);
+  button.addClass('giphyButton');
+  button.attr('data-animation');
+  $('#giphyButtons').append(button);
+
+  //Add a toaster message
+  var options = {
+    style: {
+      main: {
+        background: '#d9453d',
+        color: 'white'
+      }
+    }
+  };
+
+  iqwerty.toast.Toast('Button\'s added successfully!', options);
 }
-createButtons();
 
 //Fetch gif from api and display static gif by default
 function displayGiphy() {
   var giphyValue = $(this).text();
-  var requestUrl = `http://api.giphy.com/v1/gifs/search?q=${giphyValue}&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
+  var requestUrl = `https://api.giphy.com/v1/gifs/search?q=${giphyValue}&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
 
   //remove old gif
   $('img').remove();
 
   $.ajax({
     url: requestUrl,
-    method: "GET"
-  }).then(function (response) {
+    method: 'GET'
+  }).then(function(response) {
     for (var gif in response.data) {
       var stillGif = response.data[gif].images.original_still.url;
       var animatedGif = response.data[gif].images.original.url;
 
-      var giphyImageEle = $('<img>').attr('src', stillGif).attr('data-animated', animatedGif).attr('data-still', stillGif);
+      var giphyImageEle = $('<img>')
+        .attr('src', stillGif)
+        .attr('data-animated', animatedGif)
+        .attr('data-still', stillGif);
       $('#giphyImages').append(giphyImageEle);
     }
   });
@@ -53,7 +74,7 @@ function displayAnimateGiphy() {
   var animateGifUrl = $(this).attr('data-animated');
   $(this).attr('src', animateGifUrl);
 
-  $(this).on('mouseout', displayStillGiphy)
+  $(this).on('mouseout', displayStillGiphy);
 }
 
 //when gif button is clicked, display 10 static giphy
@@ -62,3 +83,5 @@ $(document).on('click', '.giphyButton', displayGiphy);
 //When user hover over gif, display animate gif
 $(document).on('mouseover', 'img', displayAnimateGiphy);
 
+//On Add button, make input value a button
+$(document).on('click', '#newGifButton', createButtons);
