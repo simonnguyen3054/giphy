@@ -8,8 +8,19 @@
 //Create a search input
 //on search button clicked, add the button
 //Alert user button has added
+//Display trending gif by default
 
-var buttonArray = [];
+var buttonArray = ['trending'];
+
+for (i in buttonArray) {
+  var button = $('<button>').text(buttonArray[i]);
+  button.addClass('defaultGiphyButton');
+  button.attr('data-animation');
+  $('#giphyButtons').append(button);
+}
+
+//When page opens, display the default trending gif
+displayDefaultGiphy();
 
 //create buttons
 function createButtons() {
@@ -36,11 +47,34 @@ function createButtons() {
       }
     }
   };
-
-  iqwerty.toast.Toast('Button\'s added successfully!', options);
+  iqwerty.toast.Toast("Button's added successfully!", options);
 }
 
-//Fetch gif from api and display static gif by default
+//In case, user clicks the default button again, run this function
+function displayDefaultGiphy() {
+  var trendingUrl = `http://api.giphy.com/v1/gifs/trending?q=&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
+
+  //remove old gif
+  $('img').remove();
+
+  $.ajax({
+    url: trendingUrl,
+    method: 'GET'
+  }).then(function(response) {
+    for (var gif in response.data) {
+      var stillGif = response.data[gif].images.original_still.url;
+      var animatedGif = response.data[gif].images.original.url;
+
+      var giphyImageEle = $('<img>')
+        .attr('src', stillGif)
+        .attr('data-animated', animatedGif)
+        .attr('data-still', stillGif);
+      $('#giphyImages').append(giphyImageEle);
+    }
+  });
+}
+
+//Fetch gif from api and display static gif
 function displayGiphy() {
   var giphyValue = $(this).text();
   var requestUrl = `https://api.giphy.com/v1/gifs/search?q=${giphyValue}&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
@@ -76,6 +110,9 @@ function displayAnimateGiphy() {
 
   $(this).on('mouseout', displayStillGiphy);
 }
+
+//When default display button is clicked, run this function
+$(document).on('click', '.defaultGiphyButton', displayDefaultGiphy);
 
 //when gif button is clicked, display 10 static giphy
 $(document).on('click', '.giphyButton', displayGiphy);
