@@ -1,28 +1,17 @@
-//Create an array of buttons
-//Display buttons
-//when button is clicked, use ajax to fetch giphy api
-//Limit to 10 giphy
-//Fetch still giphy and animated giphy
-//Display still giphy by default
-//When hover over, show annimated giphy
-//Create a search input
-//on search button clicked, add the button
-//Alert user button has added
-//Display trending gif by default
-
 var buttonArray = ['trending'];
 
+//Display buttons in the array by default
 for (i in buttonArray) {
-  var button = $('<button>').text(buttonArray[i]);
-  button.addClass('defaultGiphyButton');
-  button.attr('data-animation');
-  $('#giphyButtons').append(button);
+  var defaultButton = $('<button>').text(buttonArray[i]);
+  defaultButton.addClass('defaultGiphyButton');
+  defaultButton.attr('data-animation');
+  $('#giphyButtons').append(defaultButton);
 }
 
 //When page opens, display the default trending gif
 displayDefaultGiphy();
 
-//create buttons
+//create buttons when user click Add
 function createButtons() {
   event.preventDefault();
   var inputValue = $('form input').val();
@@ -33,10 +22,13 @@ function createButtons() {
     alert('Please enter a value');
   }
 
-  var button = $('<button>').text(inputValue);
-  button.addClass('giphyButton');
-  button.attr('data-animation');
-  $('#giphyButtons').append(button);
+  var customButton = $('<button>').text(inputValue);
+  customButton.addClass('giphyButton');
+  customButton.attr('data-animation');
+  $('#giphyButtons').append(customButton);
+
+  //clear input
+  $('form input').val('');
 
   //Add a toaster message
   var options = {
@@ -52,7 +44,7 @@ function createButtons() {
 
 //In case, user clicks the default button again, run this function
 function displayDefaultGiphy() {
-  var trendingUrl = `http://api.giphy.com/v1/gifs/trending?q=&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
+  var trendingUrl = `http://api.giphy.com/v1/gifs/trending?q=&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=100`;
 
   //remove old gif
   $('img').remove();
@@ -64,12 +56,22 @@ function displayDefaultGiphy() {
     for (var gif in response.data) {
       var stillGif = response.data[gif].images.original_still.url;
       var animatedGif = response.data[gif].images.original.url;
+      var stillGifWidth = parseInt(response.data[gif].images.original_still.width);
 
       var giphyImageEle = $('<img>')
         .attr('src', stillGif)
         .attr('data-animated', animatedGif)
-        .attr('data-still', stillGif);
+        .attr('data-still', stillGif)
+        .addClass('grid-item');
       $('#giphyImages').append(giphyImageEle);
+
+      if (stillGifWidth > 350 && stillGifWidth < 500) {
+        giphyImageEle.addClass('medium');
+      } else if (stillGifWidth < 350) {
+        giphyImageEle.addClass('small');
+      } else {
+        giphyImageEle.addClass('large');
+      }
     }
   });
 }
@@ -77,7 +79,7 @@ function displayDefaultGiphy() {
 //Fetch gif from api and display static gif
 function displayGiphy() {
   var giphyValue = $(this).text();
-  var requestUrl = `https://api.giphy.com/v1/gifs/search?q=${giphyValue}&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
+  var requestUrl = `https://api.giphy.com/v1/gifs/search?q=${giphyValue}&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=100`;
 
   //remove old gif
   $('img').remove();
@@ -89,12 +91,21 @@ function displayGiphy() {
     for (var gif in response.data) {
       var stillGif = response.data[gif].images.original_still.url;
       var animatedGif = response.data[gif].images.original.url;
+      var stillGifWidth = parseInt(response.data[gif].images.original_still.width);
 
       var giphyImageEle = $('<img>')
         .attr('src', stillGif)
         .attr('data-animated', animatedGif)
         .attr('data-still', stillGif);
       $('#giphyImages').append(giphyImageEle);
+
+      if (stillGifWidth > 350 && stillGifWidth < 500) {
+        giphyImageEle.addClass('medium');
+      } else if (stillGifWidth < 350) {
+        giphyImageEle.addClass('small');
+      } else {
+        giphyImageEle.addClass('large');
+      }
     }
   });
 }
