@@ -131,5 +131,5 @@ $(document).on('click', '.giphyButton', displayGiphy);
 //When user hover over gif, display animate gif
 $(document).on('mouseover', 'img', displayAnimateGiphy);
 
-//On Add button, make input value a button
+//On Add button, make input value a butto
 $(document).on('click', '#newGifButton', createButtons);
