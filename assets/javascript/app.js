@@ -1,6 +1,6 @@
 var buttonArray = ['trending'];
 
-//Display buttons in the array by defaul
+//Display buttons in the array by default
 for (i in buttonArray) {
   var defaultButton = $('<a>').text(buttonArray[i]);
   defaultButton.addClass('defaultGiphyButton btn btn-white').attr('href', '#');
@@ -21,8 +21,10 @@ function createButtons() {
     alert('Please enter a value');
   }
 
+  var removeIcon = $('<i class="fas fa-times"></i>');
   var customButton = $('<a>').text(inputValue);
-  customButton.addClass('giphyButton btn btn-white').attr('href', '#');;
+  customButton.addClass('giphyButton btn btn-white').attr('href', '#');
+  customButton.append(removeIcon);
   $('#giphyButtons').append(customButton);
 
   //clear input
@@ -42,7 +44,7 @@ function createButtons() {
 
 //In case, user clicks the default button again, run this function
 function displayDefaultGiphy() {
-  var trendingUrl = `http://api.giphy.com/v1/gifs/trending?q=&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=100`;
+  var trendingUrl = `http://api.giphy.com/v1/gifs/trending?q=&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
 
   //remove old gif
   $('img').remove();
@@ -77,7 +79,7 @@ function displayDefaultGiphy() {
 //Fetch gif from api and display static gif
 function displayGiphy() {
   var giphyValue = $(this).text();
-  var requestUrl = `https://api.giphy.com/v1/gifs/search?q=${giphyValue}&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=100`;
+  var requestUrl = `https://api.giphy.com/v1/gifs/search?q=${giphyValue}&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
 
   //remove old gif
   $('img').remove();
@@ -120,6 +122,21 @@ function displayAnimateGiphy() {
   $(this).on('mouseout', displayStillGiphy);
 }
 
+function removeButton(e) {
+  $(this).closest("a").remove();
+  //Handle event bubbling
+  e.stopPropagation();
+}
+
+//Initialize popover
+$(function () {
+  $('[data-toggle="popover"]').popover({
+    html: true,
+    title: "Add Button to Search for GIF",
+    content: '<form><input type="text" name="add"><button id="newGifButton">ADD</button></form>'
+  })
+})
+
 //When default display button is clicked, run this function
 $(document).on('click', '.defaultGiphyButton', displayDefaultGiphy);
 
@@ -132,11 +149,7 @@ $(document).on('mouseover', 'img', displayAnimateGiphy);
 //On Add button, make input value a butto
 $(document).on('click', '#newGifButton', createButtons);
 
-//Initialize popover
-$(function () {
-  $('[data-toggle="popover"]').popover({
-    html: true,
-    title: "Add Button to Search for GIF",
-    content: '<form><input type="text" name="add"><button id="newGifButton">ADD</button></form>'
-  })
-})
+//remove button
+$(document).on('click', '.fa-times', removeButton);
+
+
