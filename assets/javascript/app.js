@@ -131,3 +131,12 @@ $(document).on('mouseover', 'img', displayAnimateGiphy);
 
 //On Add button, make input value a butto
 $(document).on('click', '#newGifButton', createButtons);
+
+//Initialize popover
+$(function () {
+  $('[data-toggle="popover"]').popover({
+    html: true,
+    title: "Add Button to Search for GIF",
+    content: '<form><input type="text" name="add"><button id="newGifButton">ADD</button></form>'
+  })
+})
