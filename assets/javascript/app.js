@@ -1,10 +1,9 @@
 var buttonArray = ['trending'];
 
-//Display buttons in the array by default
+//Display buttons in the array by defaul
 for (i in buttonArray) {
-  var defaultButton = $('<button>').text(buttonArray[i]);
-  defaultButton.addClass('defaultGiphyButton');
-  defaultButton.attr('data-animation');
+  var defaultButton = $('<a>').text(buttonArray[i]);
+  defaultButton.addClass('defaultGiphyButton btn btn-white').attr('href', '#');
   $('#giphyButtons').append(defaultButton);
 }
 
@@ -22,9 +21,8 @@ function createButtons() {
     alert('Please enter a value');
   }
 
-  var customButton = $('<button>').text(inputValue);
-  customButton.addClass('giphyButton');
-  customButton.attr('data-animation');
+  var customButton = $('<a>').text(inputValue);
+  customButton.addClass('giphyButton btn btn-white').attr('href', '#');;
   $('#giphyButtons').append(customButton);
 
   //clear input

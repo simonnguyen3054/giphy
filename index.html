@@ -6,24 +6,34 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Giphy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+    crossorigin="anonymous">
   <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
 <body>
   <div id="container">
-    <div id="giphyButtons"></div>
-    <div id="addGifButton">
-      <form>
-        Add an Animal <br/>
-        <input type="text" name="add">
-        <button id="newGifButton">Add</button>
-      </form>
+    <div class="panel">
+      <div id="giphyButtons"></div>
+      <div id="addGifButton">
+        <a id="addButton" data-toggle="popover" title="Popover title" data-content="And here's some amazing content. It's very engaging. Right?"
+          href="#" class="btn btn-white">Add Button
+          <i class="fas fa-plus"></i>
+        </a>
+        <form>
+          Make a button of anything
+          <br/>
+          <input type="text" name="add">
+          <button id="newGifButton">Add</button>
+        </form>
+      </div>
     </div>
     <div class="grid" id="giphyImages"></div>
   </div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script src="assets/javascript/toast.js"></script>
-  <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
   <script src="assets/javascript/app.js">
   </script>
 </body>

@@ -1,0 +1,67 @@
+body {
+  background-color: #f1f0ea;
+}
+
+.panel {
+  display: flex;
+  margin: 20px 20px 20px;
+}
+
+/* #addGifButton {
+  margin-left: auto;
+} */
+
+/* GIF layout */
+.grid {
+  display: grid;
+  grid-gap: 5px;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  grid-auto-rows: 150px;
+}
+
+.small {
+  grid-row: span 1;
+  grid-column: span 1;
+}
+
+.medium {
+  grid-row: span 2;
+  grid-column: span 1;
+}
+
+.large {
+  grid-row: span 3;
+  grid-column: span 1;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+}
+
+/* button style */
+.btn:link,
+.btn:visited {
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 10px 35px;
+  border-radius: 100px;
+  margin: 10px 20px;
+  transition: all 0.2s;
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  color: #fff;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+.btn:active {
+  transform: translateY(-1px);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+}
+
+.btn-white {
+  background-color: #e3663b;
+  color: #fff;
+}
