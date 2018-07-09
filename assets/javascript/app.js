@@ -1,4 +1,10 @@
 var buttonArray = ['trending'];
+var inputValue = "";
+var defaultLimit = 0;
+var searchLimit = 0;
+var defaultButtonVal = 'trending';
+var customButtonVal = "";
+var previousButton = "trending";
 
 //Display buttons in the array by default
 for (i in buttonArray) {
@@ -13,7 +19,7 @@ displayDefaultGiphy();
 //create buttons when user click Add
 function createButtons() {
   event.preventDefault();
-  var inputValue = $('form input').val();
+  inputValue = $('form input').val();
 
   if (inputValue) {
     buttonArray.push(inputValue);
@@ -34,7 +40,7 @@ function createButtons() {
   var options = {
     style: {
       main: {
-        background: '#d9453d',
+        background: '#dc3545',
         color: 'white'
       }
     }
@@ -42,18 +48,22 @@ function createButtons() {
   iqwerty.toast.Toast("Button's added successfully!", options);
 }
 
-//In case, user clicks the default button again, run this function
+//Display default trending gif if user click the trending button or scroll down
 function displayDefaultGiphy() {
-  var trendingUrl = `http://api.giphy.com/v1/gifs/trending?q=&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
-
-  //remove old gif
-  $('img').remove();
+  //remove default gif if user clicks on a custom button
+  if (previousButton !== defaultButtonVal) {
+    $('img').remove();
+    previousButton = defaultButtonVal; //Needed if trending button is clicked
+    defaultLimit = 0;
+  }
+  defaultLimit += 10;
+  var trendingUrl = `http://api.giphy.com/v1/gifs/trending?q=&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=${defaultLimit}`;
 
   $.ajax({
     url: trendingUrl,
     method: 'GET'
   }).then(function(response) {
-    for (var gif in response.data) {
+    for (var gif = defaultLimit - 9; gif < defaultLimit; gif++) {
       var stillGif = response.data[gif].images.original_still.url;
       var animatedGif = response.data[gif].images.original.url;
       var stillGifWidth = parseInt(response.data[gif].images.original_still.width);
@@ -77,18 +87,29 @@ function displayDefaultGiphy() {
 }
 
 //Fetch gif from api and display static gif
-function displayGiphy() {
-  var giphyValue = $(this).text();
-  var requestUrl = `https://api.giphy.com/v1/gifs/search?q=${giphyValue}&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=10`;
+function displaySearchGiphy() {
+  //use for button click event
+  customButtonVal = $(this).text();
 
-  //remove old gif
-  $('img').remove();
+  //use for scrolling event
+  if (!customButtonVal) {
+    customButtonVal = inputValue;
+  }
+
+  if (previousButton !== customButtonVal) {
+    $('img').remove();
+    previousButton = customButtonVal;
+    searchLimit = 0;
+  }
+
+  searchLimit += 10;
+  var requestUrl = `https://api.giphy.com/v1/gifs/search?q=${customButtonVal}&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=${searchLimit}`;
 
   $.ajax({
     url: requestUrl,
     method: 'GET'
   }).then(function(response) {
-    for (var gif in response.data) {
+    for (var gif = searchLimit - 9; gif < searchLimit; gif++) {
       var stillGif = response.data[gif].images.original_still.url;
       var animatedGif = response.data[gif].images.original.url;
       var stillGifWidth = parseInt(response.data[gif].images.original_still.width);
@@ -108,6 +129,7 @@ function displayGiphy() {
       }
     }
   });
+
 }
 
 function displayStillGiphy() {
@@ -141,15 +163,26 @@ $(function () {
 $(document).on('click', '.defaultGiphyButton', displayDefaultGiphy);
 
 //when gif button is clicked, display 10 static giphy
-$(document).on('click', '.giphyButton', displayGiphy);
+$(document).on('click', '.giphyButton', displaySearchGiphy);
 
 //When user hover over gif, display animate gif
 $(document).on('mouseover', 'img', displayAnimateGiphy);
 
-//On Add button, make input value a butto
+//On Add button, make input value a button
 $(document).on('click', '#newGifButton', createButtons);
 
 //remove button
 $(document).on('click', '.fa-times', removeButton);
+
+//Append more gif when page is scrolled to bottom
+$(window).scroll(function() {
+  if($(window).scrollTop() == $(document).height() - $(window).height()) {
+    if (previousButton === 'trending') {
+      displayDefaultGiphy();
+    } else {
+      displaySearchGiphy();
+    }
+  }
+});
 
 
