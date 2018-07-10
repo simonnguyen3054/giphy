@@ -1,10 +1,10 @@
-var buttonArray = ['trending'];
-var inputValue = "";
-var defaultLimit = 0;
-var searchLimit = 0;
-var defaultButtonVal = 'trending';
-var customButtonVal = "";
-var previousButton = "trending";
+var buttonArray = ['trending'],
+    inputValue = "",
+    defaultLimit = 0,
+    searchLimit = 0,
+    defaultButtonVal = 'trending',
+    customButtonVal = "",
+    previousButton = "trending";
 
 //Display buttons in the array by default
 for (i in buttonArray) {
@@ -29,7 +29,7 @@ function createButtons() {
 
   var removeIcon = $('<i class="fas fa-times"></i>');
   var customButton = $('<a>').text(inputValue);
-  customButton.addClass('giphyButton btn btn-white').attr('href', '#');
+  customButton.addClass('customGiphyButton btn btn-white').attr('href', '#');
   customButton.append(removeIcon);
   $('#giphyButtons').append(customButton);
 
@@ -91,9 +91,9 @@ function displaySearchGiphy() {
   //use for button click event
   customButtonVal = $(this).text();
 
-  //use for scrolling event
+  //Use for scrolling event
   if (!customButtonVal) {
-    customButtonVal = inputValue;
+    customButtonVal = previousButton;
   }
 
   if (previousButton !== customButtonVal) {
@@ -162,8 +162,8 @@ $(function () {
 //When default display button is clicked, run this function
 $(document).on('click', '.defaultGiphyButton', displayDefaultGiphy);
 
-//when gif button is clicked, display 10 static giphy
-$(document).on('click', '.giphyButton', displaySearchGiphy);
+//when custom gif button is clicked, display 10 static giphy
+$(document).on('click', '.customGiphyButton', displaySearchGiphy);
 
 //When user hover over gif, display animate gif
 $(document).on('mouseover', 'img', displayAnimateGiphy);
