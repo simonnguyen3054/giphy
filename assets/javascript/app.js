@@ -57,7 +57,7 @@ function displayDefaultGiphy() {
     defaultLimit = 0;
   }
   defaultLimit += 10;
-  var trendingUrl = `http://api.giphy.com/v1/gifs/trending?q=&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=${defaultLimit}`;
+  var trendingUrl = `https://api.giphy.com/v1/gifs/trending?q=&api_key=5eNZ3fJ1SoaiszpjweOSKPdly0goEupo&limit=${defaultLimit}`;
 
   $.ajax({
     url: trendingUrl,
